@@ -3,6 +3,24 @@ import json, os
 # save.json location
 svdfile = './saved/save.json'
 
+def showFile(title):
+    with open(svdfile, 'r') as data:
+            info = json.load(data)
+            print(f'------{title}-------')
+            # If there is no data in save.json
+            if len(info) == 0:
+                print('No files found')
+                os.system('pause')
+                return
+            # If there is data in save.json
+            else:
+                i = 1
+                for index in info:
+                    for key in index:
+                        print(f'[{i}] {key}')
+                    i += 1
+                print('\n[0] Back')
+
 def newFile():
     os.system('cls')
     players = input('Players (separate with comma (,)):\n').split(',')
@@ -12,19 +30,22 @@ def newFile():
     for player in players:
         playersdict[player] = 0
 
-    # Declare load and saveslot as global variable
-    global load, saveslot
+    global saveslot, load
     saveslot = -1
     load = playersdict
     playFile()
 
 def saveFile(x):
-    # When you make a new file, you will go to this if
+    # When make a new file, it will go to this if
     if x == -1:
+        savename = input('Save name:\n')
+        nameload = dict()
+        nameload[savename] = load
+
         # Read save.json and append the data
         with open(svdfile, 'r') as data:
             info = json.load(data)
-            info.append(load)
+            info.append(nameload)
             json_object = json.dumps(info, indent=4)
             global saveslot
             saveslot = len(info)-1
@@ -33,12 +54,13 @@ def saveFile(x):
         with open(svdfile, 'w') as data:
             data.write(json_object)
 
-    # When you load a file, you will go to this else
+    # When load a file, will go to this else
     else:
         # Read save.json and changes the data from index
         with open(svdfile, 'r') as data:
             info = json.load(data)
-            info[saveslot] = load
+            for key in info[x]:
+                info[x][key] = load
             json_object = json.dumps(info, indent=4)
 
         # Write changes into save.json
@@ -48,33 +70,24 @@ def saveFile(x):
 def loadFile():
     while True:
         os.system('cls')
+        showFile('Load File')
         with open(svdfile, 'r') as data:
             info = json.load(data)
-            print('-------Saved Files-------')
-            # If there is no data in save.json
             if len(info) == 0:
-                print('No files found')
-                os.system('pause')
                 return
-            # If there is data in save.json
             else:
-                for i in range(1, len(info)+1):
-                    print(f'[{i}] Save{i}')
-                print('[0] Back')
-
                 try:
-                    # Declare load and saveslot as global variable
-                    global load, saveslot
+                    global saveslot, load
                     saveslot = int(input('Load> '))-1
                 except:
                     continue
-
                 # Back
                 if saveslot == -1:
                     return
                 # Load file
                 elif saveslot in range(len(info)):
-                    load = info[saveslot]
+                    for key in info[saveslot]:
+                        load = info[saveslot][key]
                 # Index out of range
                 else:
                     print('file not found')
@@ -86,24 +99,16 @@ def loadFile():
 def deleteFile():
     while True:
         os.system('cls')
+        showFile('Delete File')
         with open(svdfile, 'r') as data:
             info = json.load(data)
-            print('-------Delete File-------')
-            # If there is no data in save.json
             if len(info) == 0:
-                print('No files found')
-                os.system('pause')
                 return
-            # If there is data in save.json
             else:
-                for i in range(1, len(info)+1):
-                    print(f'[{i}] Save{i}')
-                print('[0] Back')
                 try:
                     answer = int(input('Delete> '))-1
                 except:
                     continue
-
                 # Back
                 if answer == -1:
                     return
@@ -158,7 +163,7 @@ while True:
     print('[1] New File')
     print('[2] Load File')
     print('[3] Delete File')
-    print('[0] Exit')
+    print('\n[0] Exit')
 
     try:
         answer = int(input('> '))
