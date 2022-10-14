@@ -46,25 +46,42 @@ def saveFile(x):
             data.write(json_object)
 
 def loadFile():
-    os.system('cls')
-    with open(svdfile, 'r') as data:
-        info = json.load(data)
-        print('-------Saved Files-------')
-        # If there is no data in save.json
-        if len(info) == 0:
-            print('No files found')
-            os.system('pause')
-            return
-        # If there is data in save.json
-        else:
-            for i in range(1, len(info)+1):
-                print(f'[{i}] Save{i}')
+    while True:
+        os.system('cls')
+        with open(svdfile, 'r') as data:
+            info = json.load(data)
+            print('-------Saved Files-------')
+            # If there is no data in save.json
+            if len(info) == 0:
+                print('No files found')
+                os.system('pause')
+                return
+            # If there is data in save.json
+            else:
+                for i in range(1, len(info)+1):
+                    print(f'[{i}] Save{i}')
+                print('[0] Back')
 
-            # Declare load and saveslot as global variable
-            global load, saveslot
-            saveslot = int(input('Load> '))-1
-            load = info[saveslot]
-            playFile()
+                try:
+                    # Declare load and saveslot as global variable
+                    global load, saveslot
+                    saveslot = int(input('Load> '))-1
+                except:
+                    continue
+
+                # Back
+                if saveslot == -1:
+                    return
+                # Load file
+                elif saveslot in range(len(info)):
+                    load = info[saveslot]
+                # Index out of range
+                else:
+                    print('file not found')
+                    os.system('pause')
+                    return
+                break
+    playFile()
 
 def deleteFile():
     while True:
@@ -86,6 +103,7 @@ def deleteFile():
                     answer = int(input('Delete> '))-1
                 except:
                     continue
+
                 # Back
                 if answer == -1:
                     return
@@ -104,6 +122,7 @@ def deleteFile():
                         else:
                             continue
                     break
+                # Index out of range
                 else:
                     print('file not found')
                     os.system('pause')
