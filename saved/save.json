@@ -1,1 +1,24 @@
-[]
+[
+    [
+        {
+            "Example": {
+                "JeremyJFN": 100,
+                "Muhajir": 99
+            }
+        },
+        {
+            "time": "10/15/22, 14:45:36"
+        }
+    ],
+    [
+        {
+            "More Example": {
+                "JeremyJFN": 0,
+                "Muhajir": 0
+            }
+        },
+        {
+            "time": "10/15/22, 14:49:17"
+        }
+    ]
+]

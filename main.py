@@ -1,12 +1,16 @@
-import json, os
+import json, os, datetime
 
 # save.json location
-svdfile = './saved/save.json'
+savedfile = './saved/save.json'
+maxlen = 51
 
 def showFile(title):
-    with open(svdfile, 'r') as data:
+    with open(savedfile, 'r') as data:
             info = json.load(data)
-            print(f'------{title}-------')
+            # Make the display look better
+            length = maxlen - len(title)
+            length = length // 2
+            print(f'{"-"*length}{title}{"-"*length}')
             # If there is no data in save.json
             if len(info) == 0:
                 print('No files found')
@@ -15,9 +19,12 @@ def showFile(title):
             # If there is data in save.json
             else:
                 i = 1
-                for index in info:
-                    for key in index:
-                        print(f'[{i}] {key}')
+                for slot in info:
+                    for name in slot[0]:
+                        savename = name
+                    # Make the display look better
+                    length = maxlen - len(f'[{i}] {savename}{slot[1]["time"]}')
+                    print(f'[{i}] {savename}{" "*length}{slot[1]["time"]}')
                     i += 1
                 print('\n[0] Back')
 
@@ -36,45 +43,58 @@ def newFile():
     playFile()
 
 def saveFile(x):
-    # When make a new file, it will go to this if
+    now = datetime.datetime.today()
+    # If previously just created a file, program will go to this if
     if x == -1:
         savename = input('Save name:\n')
-        nameload = dict()
-        nameload[savename] = load
+        svfile = []
+        progress = dict()
+        time = dict()
+
+        progress[savename] = load
+        time['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
+        now = datetime.datetime.today()
+        svfile.extend([progress, time])
 
         # Read save.json and append the data
-        with open(svdfile, 'r') as data:
+        with open(savedfile, 'r') as data:
             info = json.load(data)
-            info.append(nameload)
+            info.append(svfile)
             json_object = json.dumps(info, indent=4)
             global saveslot
             saveslot = len(info)-1
 
         # Write changes into save.json
-        with open(svdfile, 'w') as data:
+        with open(savedfile, 'w') as data:
             data.write(json_object)
 
-    # When load a file, will go to this else
+    # If previously loaded the file, program will go to this else
     else:
         # Read save.json and changes the data from index
-        with open(svdfile, 'r') as data:
+        with open(savedfile, 'r') as data:
+            now = datetime.datetime.today()
             info = json.load(data)
-            for key in info[x]:
-                info[x][key] = load
+            for savename in info[x][0]:
+                info[x][0][savename] = load
+            for time in info[x][1]:
+                info[x][1][time] = f'{now.strftime("%x")}, {now.strftime("%X")}'
             json_object = json.dumps(info, indent=4)
 
         # Write changes into save.json
-        with open(svdfile, 'w') as data:
+        with open(savedfile, 'w') as data:
             data.write(json_object)
 
 def loadFile():
     while True:
         os.system('cls')
+        # Show files to user
         showFile('Load File')
-        with open(svdfile, 'r') as data:
+        with open(savedfile, 'r') as data:
             info = json.load(data)
+            # If there is no data in save.json
             if len(info) == 0:
                 return
+            # If there is data in save.json
             else:
                 try:
                     global saveslot, load
@@ -86,8 +106,8 @@ def loadFile():
                     return
                 # Load file
                 elif saveslot in range(len(info)):
-                    for key in info[saveslot]:
-                        load = info[saveslot][key]
+                    for savename in info[saveslot][0]:
+                        load = info[saveslot][0][savename]
                 # Index out of range
                 else:
                     print('file not found')
@@ -99,11 +119,14 @@ def loadFile():
 def deleteFile():
     while True:
         os.system('cls')
+        # Show files to user
         showFile('Delete File')
-        with open(svdfile, 'r') as data:
+        with open(savedfile, 'r') as data:
             info = json.load(data)
+            # If there is no data in save.json
             if len(info) == 0:
                 return
+            # If there is data in save.json
             else:
                 try:
                     answer = int(input('Delete> '))-1
@@ -119,7 +142,7 @@ def deleteFile():
                         if confirmation == 'y':
                             info.pop(answer)
                             json_object = json.dumps(info, indent=4)
-                            with open(svdfile, 'w') as data:
+                            with open(savedfile, 'w') as data:
                                 data.write(json_object)
                             break
                         elif confirmation == 'n':
@@ -145,6 +168,7 @@ def playFile():
             try:
                 score = int(score)
             except:
+                # Commands
                 if score == '/exit':
                     exit()
                 elif score == '/save':
@@ -159,11 +183,11 @@ def playFile():
 
 while True:
     os.system('cls')
-    print('-------MENU--------')
+    print('-----------MENU-----------')
     print('[1] New File')
     print('[2] Load File')
-    print('[3] Delete File')
-    print('\n[0] Exit')
+    print('[3] Delete File\n')
+    print('[0] Exit')
 
     try:
         answer = int(input('> '))
