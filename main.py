@@ -43,17 +43,16 @@ def newFile():
     playFile()
 
 def saveFile(x):
-    now = datetime.datetime.today()
-    # If previously just created a file, program will go to this if
+    # If previously just created a file, the program will go to this if
     if x == -1:
         savename = input('Save name:\n')
         svfile = []
         progress = dict()
         time = dict()
 
+        now = datetime.datetime.today()
         progress[savename] = load
         time['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
-        now = datetime.datetime.today()
         svfile.extend([progress, time])
 
         # Read save.json and append the data
@@ -68,7 +67,7 @@ def saveFile(x):
         with open(savedfile, 'w') as data:
             data.write(json_object)
 
-    # If previously loaded the file, program will go to this else
+    # If previously loaded the file, the program will go to this else
     else:
         # Read save.json and changes the data from index
         with open(savedfile, 'r') as data:
