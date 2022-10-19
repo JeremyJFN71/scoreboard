@@ -23,27 +23,28 @@ except:
 
 def showFile(title):
     with open(savedfile, 'r') as data:
-            info = json.load(data)
-            # Make the display look better
-            length = maxlen - len(title)
-            length = length // 2
-            print(f'{"-"*length}{title}{"-"*length}')
-            # If there is no data in save.json
-            if len(info) == 0:
-                print('No files found')
-                os.system('pause')
-                return
-            # If there is data in save.json
-            else:
-                i = 1
-                for slot in info:
-                    for name in slot[0]:
-                        savename = name
-                    # Make the display look better
-                    length = maxlen - len(f'[{i}] {savename}{slot[1]["time"]}')
-                    print(f'[{i}] {savename}{" "*length}{slot[1]["time"]}')
-                    i += 1
-                print('\n[0] Back')
+        # Make the display look better
+        length = maxlen - len(title)
+        length = length // 2
+        print(f'{"-"*length}{title}{"-"*length}')
+
+        info = json.load(data)
+        # If there is no data in save.json
+        if len(info) == 0:
+            print('No files found')
+            os.system('pause')
+            return
+        # If there is data in save.json
+        else:
+            i = 1
+            for slot in info:
+                for name in slot[0]:
+                    savename = name
+                # Make the display look better
+                length = maxlen - len(f'[{i}] {savename}{slot[1]["time"]}')
+                print(f'[{i}] {savename}{" "*length}{slot[1]["time"]}')
+                i += 1
+            print('\n[0] Back')
 
 def newFile():
     os.system('cls')
@@ -76,13 +77,12 @@ def saveFile(x):
         with open(savedfile, 'r') as data:
             info = json.load(data)
             info.append(svfile)
-            json_object = json.dumps(info, indent=4)
             global saveslot
             saveslot = len(info)-1
 
         # Write changes into save.json
         with open(savedfile, 'w') as data:
-            data.write(json_object)
+            json.dump(info, data, indent=4)
 
     # If previously loaded the file, the program will go to this else
     else:
@@ -94,11 +94,10 @@ def saveFile(x):
                 info[x][0][savename] = load
             for time in info[x][1]:
                 info[x][1][time] = f'{now.strftime("%x")}, {now.strftime("%X")}'
-            json_object = json.dumps(info, indent=4)
 
         # Write changes into save.json
         with open(savedfile, 'w') as data:
-            data.write(json_object)
+            json.dump(info, data, indent=4)
 
 def loadFile():
     while True:
