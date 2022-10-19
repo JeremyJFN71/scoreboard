@@ -157,9 +157,8 @@ def deleteFile():
                         confirmation = input('Are you sure?[y/n]: ')
                         if confirmation == 'y':
                             info.pop(answer)
-                            json_object = json.dumps(info, indent=4)
                             with open(savedfile, 'w') as data:
-                                data.write(json_object)
+                                json.dump(info, data, indent=4)
                             break
                         elif confirmation == 'n':
                             return
