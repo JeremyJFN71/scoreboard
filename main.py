@@ -4,13 +4,14 @@ maxlen = 51
 # save.json location
 savedfile = './saved/save.json'
 
-'''
-checks if there is a save.json and it contains [] or not, and if not then
-the programs will create save.json and write [] in save.json
-'''
+# check if there is folder named "saved", if not then the programs will create that
 if not os.path.exists('saved'):
     os.mkdir('saved')
 
+'''
+checks if there is a save.json and it contains [] or not, if not then
+the programs will create that
+'''
 try:
     with open(savedfile, 'r') as data:
         read_data = data.read()
