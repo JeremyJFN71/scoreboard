@@ -8,6 +8,9 @@ savedfile = './saved/save.json'
 checks if there is a save.json and it contains [] or not, and if not then
 the programs will create save.json and write [] in save.json
 '''
+if not os.path.exists('saved'):
+    os.mkdir('saved')
+
 try:
     with open(savedfile, 'r') as data:
         read_data = data.read()
