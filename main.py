@@ -1,8 +1,22 @@
 import json, os, datetime
 
+maxlen = 51
 # save.json location
 savedfile = './saved/save.json'
-maxlen = 51
+
+'''
+checks if there is a save.json and it contains [] or not, and if not then
+the programs will create save.json and write [] in save.json
+'''
+try:
+    with open(savedfile, 'r') as data:
+        read_data = data.read()
+        if '[' not in read_data or ']' not in read_data:
+                with open(savedfile, 'w') as data:
+                    data.write('[]')
+except:
+    with open(savedfile, 'w') as data:
+        data.write('[]')
 
 def showFile(title):
     with open(savedfile, 'r') as data:
