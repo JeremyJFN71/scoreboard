@@ -39,8 +39,7 @@ def showFile(title):
         else:
             i = 1
             for slot in info:
-                for name in slot[0]:
-                    savename = name
+                savename = list(slot[0].keys())[0]
                 # Make the display look better
                 length = maxlen - len(f'[{i}] {savename}{slot[1]["time"]}')
                 print(f'[{i}] {savename}{" "*length}{slot[1]["time"]}')
@@ -91,10 +90,8 @@ def saveFile(x):
         with open(savedfile, 'r') as data:
             now = datetime.datetime.today()
             info = json.load(data)
-            for savename in info[x][0]:
-                info[x][0][savename] = load
-            for time in info[x][1]:
-                info[x][1][time] = f'{now.strftime("%x")}, {now.strftime("%X")}'
+            info[x][0][list(info[x][0].keys())[0]] = load
+            info[x][1]['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
 
         # Write changes into save.json
         with open(savedfile, 'w') as data:
@@ -122,8 +119,7 @@ def loadFile():
                     return
                 # Load file
                 elif saveslot in range(len(info)):
-                    for savename in info[saveslot][0]:
-                        load = info[saveslot][0][savename]
+                    load = info[saveslot][0][list(info[saveslot][0].keys())[0]]
                 # Index out of range
                 else:
                     print('file not found')
