@@ -1,5 +1,5 @@
 # Scoreboard
-created by [Ahmad Muhajir](https://www.linkedin.com/in/ahmad-muhajir-syamlan-44a40b24b/)
+created by [Ahmad Muhajir](https://www.linkedin.com/in/ahmad-muhajir-syamlan/)
 
 Just a common scoreboard
 
