@@ -7,3 +7,5 @@ Just a common scoreboard
 - /menu		Go to first menu
 - /exit		quit
 - /save		save your progress
+- /add      Add player
+- /remove   Remove player

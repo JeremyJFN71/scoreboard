@@ -1,8 +1,8 @@
 import json, os, datetime
 
-maxlen = 51
 # save.json location
 savedfile = './saved/save.json'
+maxlen = 51
 
 # check if there is folder named "saved", if not then the programs will create that
 if not os.path.exists('saved'):
@@ -21,6 +21,7 @@ try:
 except:
     with open(savedfile, 'w') as data:
         data.write('[]')
+
 
 def showFile(title):
     with open(savedfile, 'r') as data:
@@ -46,6 +47,7 @@ def showFile(title):
                 i += 1
             print('\n[0] Back')
 
+
 def newFile():
     os.system('cls')
     players = input('Players (separate with comma (,)):\n').split(',')
@@ -60,42 +62,6 @@ def newFile():
     load = playersdict
     playFile()
 
-def saveFile(x):
-    # If previously just created a file, the program will go to this if
-    if x == -1:
-        savename = input('Save name:\n')
-        svfile = []
-        progress = dict()
-        time = dict()
-
-        now = datetime.datetime.today()
-        progress[savename] = load
-        time['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
-        svfile.extend([progress, time])
-
-        # Read save.json and append the data
-        with open(savedfile, 'r') as data:
-            info = json.load(data)
-            info.append(svfile)
-            global saveslot
-            saveslot = len(info)-1
-
-        # Write changes into save.json
-        with open(savedfile, 'w') as data:
-            json.dump(info, data, indent=4)
-
-    # If previously loaded the file, the program will go to this else
-    else:
-        # Read save.json and changes the data from index
-        with open(savedfile, 'r') as data:
-            now = datetime.datetime.today()
-            info = json.load(data)
-            info[x][0][list(info[x][0].keys())[0]] = load
-            info[x][1]['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
-
-        # Write changes into save.json
-        with open(savedfile, 'w') as data:
-            json.dump(info, data, indent=4)
 
 def loadFile():
     while True:
@@ -127,6 +93,7 @@ def loadFile():
                     return
                 break
     playFile()
+
 
 def deleteFile():
     while True:
@@ -167,6 +134,61 @@ def deleteFile():
                     os.system('pause')
                     return
 
+
+def saveFile(x):
+    # If previously just created a file, the program will go to this if
+    if x == -1:
+        savename = input('Save name:\n')
+        svfile = []
+        progress = dict()
+        time = dict()
+
+        now = datetime.datetime.today()
+        progress[savename] = load
+        time['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
+        svfile.extend([progress, time])
+
+        # Read save.json and append the data
+        with open(savedfile, 'r') as data:
+            info = json.load(data)
+            info.append(svfile)
+            global saveslot
+            saveslot = len(info)-1
+
+        # Write changes into save.json
+        with open(savedfile, 'w') as data:
+            json.dump(info, data, indent=4)
+
+    # If previously loaded the file, the program will go to this else
+    else:
+        # Read save.json and changes the data from index
+        with open(savedfile, 'r') as data:
+            now = datetime.datetime.today()
+            info = json.load(data)
+            info[x][0][list(info[x][0].keys())[0]] = load
+            info[x][1]['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
+
+        # Write changes into save.json
+        with open(savedfile, 'w') as data:
+            json.dump(info, data, indent=4)
+
+
+def addPlayer():
+    new_player = input('New Player: ')
+    global load
+    load[new_player] = 0
+
+
+def removePlayer():
+    remove_player = input('Remove Player: ')
+    global load
+    if remove_player in load:
+        load.pop(remove_player)
+    else:
+        print('Player not found')
+        os.system('pause')
+
+
 def playFile():
     while True:
         os.system('cls')
@@ -184,6 +206,12 @@ def playFile():
                     exit()
                 elif score == '/save':
                     saveFile(saveslot)
+                    break
+                elif score == '/add':
+                    addPlayer()
+                    break
+                elif score == '/remove':
+                    removePlayer()
                     break
                 elif score == '/menu':
                     return
