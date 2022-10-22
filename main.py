@@ -2,7 +2,6 @@ import json, os, datetime
 
 # save.json location
 savedfile = './saved/save.json'
-maxlen = 51
 
 # check if there is folder named "saved", if not then the programs will create that
 if not os.path.exists('saved'):
@@ -25,10 +24,7 @@ except:
 
 def showFile(title):
     with open(savedfile, 'r') as data:
-        # Make the display look better
-        length = maxlen - len(title)
-        length = length // 2
-        print(f'{"-"*length}{title}{"-"*length}')
+        print(title.center(51, '-'))
 
         info = json.load(data)
         # If there is no data in save.json
@@ -41,9 +37,7 @@ def showFile(title):
             i = 1
             for slot in info:
                 savename = list(slot[0].keys())[0]
-                # Make the display look better
-                length = maxlen - len(f'[{i}] {savename}{slot[1]["time"]}')
-                print(f'[{i}] {savename}{" "*length}{slot[1]["time"]}')
+                print(f'[{i}] {savename}'.ljust(32), slot[1]["time"])
                 i += 1
             print('\n[0] Back')
 
