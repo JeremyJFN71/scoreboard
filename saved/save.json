@@ -1,24 +1,18 @@
 [
-    [
-        {
-            "Example": {
-                "JeremyJFN": 100,
-                "Muhajir": 99
-            }
+    {
+        "name": "Example",
+        "progress": {
+            "Muhajir": 0,
+            "JeremyJFN": 0
         },
-        {
-            "time": "10/20/22, 07:05:40"
-        }
-    ],
-    [
-        {
-            "More Example": {
-                "JeremyJFN": 0,
-                "Muhajir": 0
-            }
+        "time": "10/27/22, 17:53:15"
+    },
+    {
+        "name": "Against Human",
+        "progress": {
+            "Ridwan": 0,
+            "Muhajir": 999
         },
-        {
-            "time": "10/21/22, 09:30:42"
-        }
-    ]
+        "time": "10/27/22, 17:54:11"
+    }
 ]

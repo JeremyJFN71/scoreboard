@@ -36,8 +36,7 @@ def showFile(title):
         else:
             i = 1
             for slot in info:
-                savename = list(slot[0].keys())[0]
-                print(f'[{i}] {savename}'.ljust(32), slot[1]["time"])
+                print(f'[{i}] {slot["name"]}'.ljust(32), slot["time"])
                 i += 1
             print('\n[0] Back')
 
@@ -79,7 +78,7 @@ def loadFile():
                     return
                 # Load file
                 elif saveslot in range(len(info)):
-                    load = info[saveslot][0][list(info[saveslot][0].keys())[0]]
+                    load = info[saveslot]['progress']
                 # Index out of range
                 else:
                     print('file not found')
@@ -133,14 +132,11 @@ def saveFile(x):
     # If previously just created a file, the program will go to this if
     if x == -1:
         savename = input('Save name:\n')
-        svfile = []
-        progress = dict()
-        time = dict()
-
+        svfile = dict()
         now = datetime.datetime.today()
-        progress[savename] = load
-        time['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
-        svfile.extend([progress, time])
+        svfile['name'] = savename
+        svfile['progress'] = load
+        svfile['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
 
         # Read save.json and append the data
         with open(savedfile, 'r') as data:
@@ -159,8 +155,8 @@ def saveFile(x):
         with open(savedfile, 'r') as data:
             now = datetime.datetime.today()
             info = json.load(data)
-            info[x][0][list(info[x][0].keys())[0]] = load
-            info[x][1]['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
+            info[x]['progress'] = load
+            info[x]['time'] = f'{now.strftime("%x")}, {now.strftime("%X")}'
 
         # Write changes into save.json
         with open(savedfile, 'w') as data:
