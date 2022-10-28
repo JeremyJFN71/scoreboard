@@ -46,9 +46,7 @@ def newFile():
     players = input('Players (separate with comma (,)):\n').split(',')
 
     # Insert players into playersdict with each key with a value of 0
-    playersdict = dict()
-    for player in players:
-        playersdict[player] = 0
+    playersdict = dict.fromkeys(players, 0)
 
     global saveslot, load
     saveslot = -1
