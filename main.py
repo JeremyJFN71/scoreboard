@@ -1,27 +1,5 @@
 import json, os, datetime
 
-# save.json location
-savedfile = './saved/save.json'
-
-# check if there is folder named "saved", if not then the programs will create that
-if not os.path.exists('saved'):
-    os.mkdir('saved')
-
-'''
-checks if there is a save.json and it contains [] or not, if not then
-the programs will create that
-'''
-try:
-    with open(savedfile, 'r') as data:
-        read_data = data.read()
-        if '[' not in read_data or ']' not in read_data:
-                with open(savedfile, 'w') as data:
-                    data.write('[]')
-except:
-    with open(savedfile, 'w') as data:
-        data.write('[]')
-
-
 def showFile(title):
     with open(savedfile, 'r') as data:
         print(title.center(51, '-'))
@@ -208,6 +186,28 @@ def playFile():
             load[player] += score
         continue
 
+# save.json location
+savedfile = './saved/save.json'
+
+# check if there is folder named "saved", if not then the programs will create that
+if not os.path.exists('saved'):
+    os.mkdir('saved')
+
+'''
+checks if there is a save.json and it contains [] or not, if not then
+the programs will create that
+'''
+try:
+    with open(savedfile, 'r') as data:
+        read_data = data.read()
+        if '[' not in read_data or ']' not in read_data:
+                with open(savedfile, 'w') as data:
+                    data.write('[]')
+except:
+    with open(savedfile, 'w') as data:
+        data.write('[]')
+
+# main menu
 while True:
     os.system('cls')
     print('-----------MENU-----------')
